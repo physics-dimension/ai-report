@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>公众号排版示例｜由初风格</title>
+<style>
+:root{
+  --ivory:#FAF9F5; --paper:#FFFFFF; --ink:#171613; --muted:#6F6C63;
+  --line:#E3DACC; --soft:#F2EFE7; --clay:#D97757; --clay-dark:#B85C3E; --olive:#788C5D;
+  --serif: ui-serif, Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC", serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  --mono: ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);line-height:1.82}
+.demo-shell{max-width:980px;margin:0 auto;padding:42px 20px 80px}.browser-note{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 18px}
+.article{max-width:680px;margin:0 auto;background:var(--paper);border:1.5px solid var(--line);border-radius:18px;padding:38px 28px 44px;box-shadow:0 12px 40px rgba(20,20,19,.045)}
+.wx-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}.pill{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:#5a574f;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:5px 9px}.pill.hot{color:var(--clay-dark);background:#FFF4EE;border-color:#E8CBBF}
+.title{font-family:var(--serif);font-size:34px;line-height:1.18;letter-spacing:-.03em;margin:0 0 14px}.title em{color:var(--clay-dark);font-style:italic}.dek{font-size:16px;color:var(--muted);margin:0 0 26px;border-left:3px solid var(--clay);padding-left:14px}
+.byline{font-size:13px;color:#8A877E;margin-bottom:30px}.byline b{color:var(--ink)}
+.lead-card{background:var(--ivory);border:1.5px solid var(--line);border-radius:14px;padding:18px;margin:26px 0}.lead-card p{margin:0;color:#403E38}.lead-card strong{color:var(--clay-dark)}
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:26px 0 36px}.toc a{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}.toc span{font-family:var(--mono);font-size:11px;color:var(--clay-dark);margin-right:6px}
+.section{margin:42px 0 0}.section-head{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:baseline;margin-bottom:14px}.num{font-family:var(--mono);font-size:15px;color:var(--clay-dark)}h2{font-family:var(--serif);font-size:25px;line-height:1.22;margin:0;letter-spacing:-.02em}p{font-size:15.8px;margin:14px 0;color:#2c2b27}.muted{color:var(--muted)}
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.evidence{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fff}.evidence .k{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase}.evidence h3{font-family:var(--serif);font-size:19px;line-height:1.2;margin:8px 0}.evidence p{font-size:14px;color:var(--muted);margin:0}.evidence.good{border-color:#C9D5B8;background:#FBFDF8}.evidence.warn{border-color:#E8CBBF;background:#FFF8F4}
+.quote{margin:24px 0;padding:18px 20px;background:#141413;color:#fff;border-radius:14px}.quote p{color:#fff;font-family:var(--serif);font-size:22px;line-height:1.42;margin:0}.quote small{display:block;margin-top:10px;color:#C9C5B8;font-family:var(--mono);font-size:11px}
+.method{counter-reset:item;margin:18px 0}.method li{list-style:none;counter-increment:item;position:relative;margin:10px 0;padding:12px 12px 12px 44px;border:1px solid var(--line);border-radius:12px;background:#fff}.method li:before{content:counter(item,decimal-leading-zero);position:absolute;left:12px;top:12px;font-family:var(--mono);font-size:12px;color:var(--clay-dark)}
+.checklist{background:var(--ivory);border:1.5px dashed var(--line);border-radius:14px;padding:16px;margin-top:18px}.checklist div{display:flex;gap:10px;border-bottom:1px solid var(--line);padding:9px 0;font-size:14.5px}.checklist div:last-child{border-bottom:0}.check{font-family:var(--mono);color:var(--olive)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:38px 0}.ending{background:#fff7f1;border:1.5px solid #E8CBBF;border-radius:16px;padding:20px;margin-top:40px}.ending h2{color:var(--clay-dark)}
+.copy-note{max-width:680px;margin:18px auto 0;color:var(--muted);font-size:13px}.copy-note code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 5px}
+@media(max-width:720px){.demo-shell{padding:18px 10px 50px}.article{border-radius:0;border-left:0;border-right:0;padding:30px 18px}.title{font-size:29px}.toc,.evidence-grid{grid-template-columns:1fr}.section-head{grid-template-columns:34px 1fr}.quote p{font-size:20px}}
+</style>
+</head>
+<body>
+<main class="demo-shell">
+  <p class="browser-note">WECHAT LAYOUT DEMO / 由初公众号排版样式示例</p>
+  <article class="article">
+    <div class="wx-meta">
+      <span class="pill hot">由初</span><span class="pill">AI PM NOTE</span><span class="pill">示例排版</span><span class="pill">可替换内容</span>
+    </div>
+    <h1 class="title">这里放一篇公众号标题：<em>关键词高亮</em> 不超过两行</h1>
+    <p class="dek">这里是导语区。用 2-3 句话说明文章要解决的问题，不展开论证，只建立阅读预期。左侧一条细线形成“报告感”。</p>
+    <div class="byline">作者：<b>由初</b>　｜　AI 产品经理 / 产品观察 / 工具实验</div>
+
+    <section class="lead-card">
+      <p><strong>先给结论：</strong> 这里放最重要的一句话。公众号读者先看到判断，再决定要不要继续读。这个卡片适合承载 TL;DR。</p>
+    </section>
+
+    <nav class="toc">
+      <a href="#s1"><span>01</span>现象：问题从哪里来</a>
+      <a href="#s2"><span>02</span>拆解：变量是什么</a>
+      <a href="#s3"><span>03</span>案例：如何观察差异</a>
+      <a href="#s4"><span>04</span>结论：下一步怎么做</a>
+    </nav>
+
+    <section id="s1" class="section">
+      <div class="section-head"><div class="num">01</div><h2>一级标题用编号，而不是大色块</h2></div>
+      <p>正文保持正常公众号阅读节奏。每段 2-4 行，不要一屏塞太满。这个风格的重点是“像报告一样清楚”，但读起来仍然像公众号。</p>
+      <p class="muted">灰色段落可以放补充说明、背景、限制条件，不抢主论点。</p>
+    </section>
+
+    <section id="s2" class="section">
+      <div class="section-head"><div class="num">02</div><h2>用双卡片做对比，而不是用复杂表格</h2></div>
+      <div class="evidence-grid">
+        <div class="evidence good"><div class="k">Good pattern</div><h3>结论前置</h3><p>先告诉读者判断，再展开证据。适合 AI 产品、工具评测、方法论文章。</p></div>
+        <div class="evidence warn"><div class="k">Watch out</div><h3>不要堆装饰</h3><p>少用渐变、花哨阴影、emoji。靠边框、编号、留白建立秩序。</p></div>
+      </div>
+    </section>
+
+    <section id="s3" class="section">
+      <div class="section-head"><div class="num">03</div><h2>中途插入一句“可被记住”的判断</h2></div>
+      <div class="quote"><p>好的公众号排版，不是把文章变漂亮，而是让读者更快知道：哪里是结论，哪里是证据，哪里是下一步。</p><small>MEMORABLE LINE / 可摘录句</small></div>
+      <p>黑底引用不要频繁出现，一篇文章 1-2 次即可。它的作用是制造节奏中断，让核心判断被记住。</p>
+    </section>
+
+    <section id="s4" class="section">
+      <div class="section-head"><div class="num">04</div><h2>方法区用清单，结尾区用行动建议</h2></div>
+      <ol class="method">
+        <li>先写一句主判断，确认文章到底想让读者记住什么。</li>
+        <li>把正文拆成 4-6 个编号章节，每节只讲一个功能。</li>
+        <li>把案例、风险、建议做成卡片，降低阅读负担。</li>
+        <li>最后给一个明确下一步，而不是泛泛总结。</li>
+      </ol>
+      <div class="checklist">
+        <div><span class="check">✓</span><span>标题不超过两行，关键词可用斜体/强调色。</span></div>
+        <div><span class="check">✓</span><span>正文段落短，卡片承载证据，引用承载金句。</span></div>
+        <div><span class="check">✓</span><span>整篇只用一个主色：陶土橙；橄榄绿只做辅助。</span></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <section class="ending">
+      <h2>结尾模块</h2>
+      <p>这里放最后的收束：一句判断 + 一个行动建议。比如“如果你也在做 AI 产品，可以先从一个小实验开始，把结果整理成可比较的案例库。”</p>
+    </section>
+  </article>
+  <p class="copy-note">说明：这是浏览器里的视觉示例。真正发公众号时，可以把这些模块复刻到微信编辑器 / 135 / 秀米 / Markdown 转公众号工具中；如果直接复制 HTML，微信可能会过滤部分 CSS。</p>
+</main>
+</body>
+</html>
