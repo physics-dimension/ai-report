@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Report</title>
+  <meta name="description" content="AI Report：AI 生成报告与视觉化测试页面索引。" />
+  <style>
+    :root { --bg:#f7f8fa; --card:#fff; --ink:#111827; --muted:#6b7280; --line:#e5e7eb; --accent:#0ea5a4; --blue:#6366f1; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); }
+    a { color:inherit; text-decoration:none; }
+    .wrap { max-width:1120px; margin:0 auto; padding:56px 22px; }
+    .hero { display:grid; grid-template-columns:1.1fr .9fr; gap:28px; align-items:center; min-height:72vh; }
+    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.08em; text-transform:uppercase; font-size:13px; }
+    h1 { font-size:clamp(44px,8vw,96px); line-height:.9; letter-spacing:-.07em; margin:18px 0; }
+    .lead { font-size:clamp(18px,2.3vw,25px); color:#374151; line-height:1.55; max-width:720px; }
+    .card { background:rgba(255,255,255,.86); border:1px solid var(--line); border-radius:28px; padding:24px; box-shadow:0 24px 80px rgba(17,24,39,.08); }
+    .report-card { display:block; transition:.2s transform,.2s box-shadow; }
+    .report-card:hover { transform:translateY(-3px); box-shadow:0 30px 90px rgba(17,24,39,.12); }
+    .thumb { width:100%; border-radius:20px; border:1px solid var(--line); display:block; background:#fff; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+    .pill { border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 12px; color:var(--muted); font-size:13px; }
+    .title { font-size:24px; font-weight:800; margin:12px 0 8px; }
+    .desc { color:var(--muted); line-height:1.7; }
+    .button { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:var(--ink); color:white; padding:12px 16px; border-radius:14px; font-weight:700; }
+    footer { color:var(--muted); padding-top:48px; font-size:14px; }
+    @media (max-width: 860px) { .hero { grid-template-columns:1fr; min-height:auto; } .wrap { padding:38px 16px; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">AI Report</div>
+        <h1>把 AI 输出变成可读界面</h1>
+        <p class="lead">这里收集 AI 工作流、模型能力和提示词实验的视觉化报告。Markdown 可以作为源材料，HTML 更适合作为复杂结论的阅读界面。</p>
+        <div class="meta">
+          <span class="pill">GitHub Pages</span>
+          <span class="pill">HTML Reports</span>
+          <span class="pill">Image Experiments</span>
+        </div>
+      </div>
+      <a class="card report-card" href="./gpt-image-2-workflows/">
+        <img class="thumb" src="./gpt-image-2-workflows/assets/all-comparisons-overview.jpg" alt="GPT Image 2 Workflows 对比总览" />
+        <div class="title">GPT Image 2 Workflows Skill 测试报告</div>
+        <div class="desc">从原始短描述到商业级提示词工作流：4 组 Raw Prompt vs Optimized Prompt 图像对比。</div>
+        <span class="button">打开报告 →</span>
+      </a>
+    </section>
+    <footer>AI Report · 第一版静态展示站点</footer>
+  </main>
+</body>
+</html>

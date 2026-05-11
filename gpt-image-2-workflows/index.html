@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPT Image 2 Workflows Skill 测试报告 · AI Report</title>
+  <meta name="description" content="GPT Image 2 Workflows Skill 测试报告：原始 prompt 与优化 workflow prompt 的图像对比。" />
+  <style>
+    :root{
+      --bg:#f7f8fa; --paper:#ffffff; --ink:#111827; --muted:#6b7280; --soft:#f3f4f6; --line:#e5e7eb;
+      --raw:#374151; --opt:#0ea5a4; --accent:#6366f1; --cyan:#06b6d4; --shadow:0 24px 80px rgba(17,24,39,.08);
+      --radius:28px; --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at 12% 0%,#e0f7fa 0,#f7f8fa 32%,#fafaf7 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+    a{color:inherit} .wrap{max-width:1180px;margin:0 auto;padding:0 22px}.wide{max-width:1360px;margin:0 auto;padding:0 22px}
+    .nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(247,248,250,.78);border-bottom:1px solid rgba(229,231,235,.8)}
+    .nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 22px}.brand{font-weight:850;letter-spacing:-.03em}.links{display:flex;gap:8px;overflow:auto}.links a{white-space:nowrap;text-decoration:none;color:#4b5563;border:1px solid var(--line);background:rgba(255,255,255,.7);padding:8px 12px;border-radius:999px;font-size:13px}.links a:hover{color:var(--ink);border-color:#cbd5e1}
+    .hero{display:grid;grid-template-columns:1fr .74fr;gap:42px;align-items:center;padding:74px 0 56px}.eyebrow{font-family:var(--mono);font-size:13px;color:var(--opt);font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{font-size:clamp(42px,6.8vw,88px);line-height:.92;letter-spacing:-.075em;margin:16px 0 18px}.lead{font-size:clamp(18px,2.2vw,24px);line-height:1.58;color:#374151;max-width:760px}.hero-card{background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:32px;padding:14px;box-shadow:var(--shadow);transform:rotate(1deg)}.hero-card img{width:100%;display:block;border-radius:24px;border:1px solid var(--line);background:white}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(255,255,255,.75);padding:9px 13px;border-radius:999px;font-size:13px;color:#4b5563}.pill strong{color:var(--ink)}
+    section{padding:54px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}.kicker{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.12em}.section-title{font-size:clamp(28px,4vw,48px);line-height:1.03;letter-spacing:-.055em;margin:8px 0}.section-desc{color:var(--muted);line-height:1.75;max-width:760px}.grid{display:grid;gap:18px}.grid-4{grid-template-columns:repeat(4,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}.card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 14px 50px rgba(17,24,39,.045)}.finding .num{font-family:var(--mono);color:var(--opt);font-weight:900}.finding h3{margin:12px 0 8px;font-size:21px;letter-spacing:-.035em}.finding p,.card p{color:var(--muted);line-height:1.72;margin:0}.method{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}.method-list{display:flex;flex-wrap:wrap;gap:9px}.method-list span{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--soft);padding:8px 10px;border-radius:999px;color:#374151}
+    .case{margin:28px 0 60px;background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}.case-head{display:grid;grid-template-columns:1fr auto;gap:22px;padding:26px 28px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(240,253,250,.68))}.case-no{font-family:var(--mono);font-size:13px;color:var(--opt);font-weight:900}.case h3{font-size:clamp(26px,3vw,38px);letter-spacing:-.055em;margin:8px 0}.case-sub{color:#4b5563;line-height:1.65;max-width:860px}.tagrow{display:flex;gap:8px;flex-wrap:wrap;align-content:start}.tag{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:white;border-radius:999px;padding:8px 10px;color:#4b5563}.compare{padding:18px;background:#f9fafb}.compare img{width:100%;display:block;border-radius:22px;border:1px solid var(--line);background:white}.case-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:22px}.mini h4{margin:0 0 10px;font-size:14px;color:#111827}.quote{font-size:15px;line-height:1.72;color:#374151;background:#f9fafb;border:1px solid var(--line);border-radius:18px;padding:16px}.bullets{margin:0;padding-left:18px;color:#4b5563;line-height:1.72}.verdict{color:#374151;line-height:1.72}.details{padding:0 22px 24px}details{border:1px solid var(--line);border-radius:18px;background:#fff}summary{cursor:pointer;padding:14px 16px;font-weight:750}pre{white-space:pre-wrap;margin:0;padding:0 16px 16px;color:#374151;font-family:var(--mono);font-size:12px;line-height:1.6}
+    .dark{background:#0f172a;color:white;border-radius:36px;padding:42px}.dark .section-title,.dark h3{color:white}.dark .section-desc,.dark p{color:#cbd5e1}.insights{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:26px}.insight{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:22px;padding:18px}.insight b{display:block;margin-bottom:8px}.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.roadmap ul{margin:8px 0 0;padding-left:18px;color:#4b5563;line-height:1.8}.sources a{display:block;color:#2563eb;text-decoration:none;margin:8px 0}.footer{padding:46px 0 70px;color:var(--muted);font-size:14px}.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.86);z-index:100;padding:24px}.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:88vh;border-radius:18px;background:white}.lightbox button{position:absolute;top:18px;right:18px;border:0;border-radius:999px;padding:10px 14px;background:white;cursor:pointer;font-weight:800}.zoomable{cursor:zoom-in}
+    @media(max-width:960px){.hero{grid-template-columns:1fr}.grid-4,.grid-2,.method,.case-body,.insights,.roadmap{grid-template-columns:1fr}.case-head{grid-template-columns:1fr}.nav-inner{display:block}.links{margin-top:10px}.hero-card{transform:none}.wrap,.wide{padding:0 16px}section{padding:40px 0}.dark{padding:28px;border-radius:26px}}
+  </style>
+</head>
+<body>
+  <nav class="nav"><div class="nav-inner"><a class="brand" href="../">AI Report</a><div class="links"><a href="#summary">关键发现</a><a href="#method">测试方法</a><a href="#gallery">案例对比</a><a href="#findings">结论</a><a href="#next">下一步</a></div></div></nav>
+  <header class="wrap hero">
+    <div>
+      <div class="eyebrow">GPT Image 2 · Workflow Skill Evaluation</div>
+      <h1>从一句话需求到可控商业图像工作流</h1>
+      <p class="lead">这份报告测试 `gpt-image-2-workflows` skill：同样的需求，一边直接用原始短描述生成，一边先经过结构化 prompt / 模板路由 / 商业约束优化，再交给 GPT Image 2 生成。</p>
+      <div class="meta"><span class="pill"><strong>4</strong> 组对比</span><span class="pill">Raw Prompt vs Optimized Prompt</span><span class="pill">商品图 / 社媒封面 / 信息图 / 餐饮图</span><span class="pill">HTML 阅读界面</span></div>
+    </div>
+    <div class="hero-card"><img class="zoomable" src="assets/all-comparisons-overview.jpg" alt="全部测试用例对比总览" loading="eager"></div>
+  </header>
+
+  <main>
+    <section id="html" class="wrap">
+      <div class="section-head"><div><div class="kicker">Why HTML</div><h2 class="section-title">Markdown 是源材料，HTML 是阅读界面</h2><p class="section-desc">Claude Code 团队成员 Thariq Shihipar 在《The Unreasonable Effectiveness of HTML》中提出：当 AI 能生成页面、图表、交互和样式时，复杂输出不必再被压平成 Markdown。Markdown 仍适合记录和版本控制；HTML 更适合承载导航、图片、对比视图和交互式报告。</p></div></div>
+      <div class="grid grid-4">
+        <div class="card finding"><div class="num">01</div><h3>复杂信息需要空间布局</h3><p>测试结果、图片对比和结论不是线性文本，HTML 可以用卡片、分栏和视觉层级降低阅读成本。</p></div>
+        <div class="card finding"><div class="num">02</div><h3>AI 输出不该是一堵文字墙</h3><p>同样内容可以变成目录、折叠面板、图像 gallery 和证据链，而不是长篇列表。</p></div>
+        <div class="card finding"><div class="num">03</div><h3>交互让人保留控制感</h3><p>图片放大、锚点导航、细节折叠让读者按需探索，而不是被迫从头读到尾。</p></div>
+        <div class="card finding"><div class="num">04</div><h3>HTML 适合最终交付</h3><p>GitHub Pages 一键分享，Telegram 里只需要一个链接，详细内容在网页里看。</p></div>
+      </div>
+    </section>
+
+    <section id="summary" class="wrap">
+      <div class="section-head"><div><div class="kicker">Executive Summary</div><h2 class="section-title">关键发现</h2><p class="section-desc">GPT Image 2 对短 prompt 已经很强；这个 skill 的价值不是简单“让图更漂亮”，而是把输出变得更可控、更可复用、更适合生产流程。</p></div></div>
+      <div class="grid grid-4">
+        <div class="card finding"><div class="num">A</div><h3>原始 prompt 已经很强</h3><p>模型会主动补全文案、版式、品牌感和广告结构，有时直接生成完整海报。</p></div>
+        <div class="card finding"><div class="num">B</div><h3>优化 prompt 提升控制力</h3><p>明确是否要文字、是否留白、是否禁止额外 logo/人物/多余产品。</p></div>
+        <div class="card finding"><div class="num">C</div><h3>优化图更像生产素材</h3><p>更适合后期排版、品牌替换、模板化和批量生产，而不只是一次性成品。</p></div>
+        <div class="card finding"><div class="num">D</div><h3>文字图收益更明显</h3><p>信息图、标题封面等场景中，结构化 prompt 能降低文字失控风险。</p></div>
+      </div>
+    </section>
+
+    <section id="method" class="wrap">
+      <div class="method">
+        <div><div class="kicker">Method</div><h2 class="section-title">测试方法</h2><p class="section-desc">每个用例生成两张图：原始短描述直接生成；同一需求经 skill 原则优化后生成。然后比较商业完成度、构图、文字准确性和可复用性。</p></div>
+        <div class="card"><h3>评估维度</h3><div class="method-list"><span>指令遵循</span><span>商业完成度</span><span>构图 / 留白</span><span>文字准确性</span><span>主体可控性</span><span>后期友好度</span><span>整体可用性</span></div></div>
+      </div>
+    </section>
+
+    <section id="gallery" class="wide">
+      <div class="wrap"><div class="kicker">Gallery</div><h2 class="section-title">案例对比</h2><p class="section-desc">每个案例中，左侧为原始描述直接生成，右侧为经过 `gpt-image-2-workflows` 优化后的描述生成。</p></div>
+
+      <article class="case" id="case-product">
+        <div class="case-head"><div><div class="case-no">Case 01</div><h3>护肤品电商广告图</h3><p class="case-sub">优化版更适合作为无文字品牌底图；原始版更像自动生成的完整广告海报。</p></div><div class="tagrow"><span class="tag">E-commerce Hero</span><span class="tag">No Text</span><span class="tag">Negative Space</span></div></div>
+        <div class="compare"><img class="zoomable" src="assets/product-ad-comparison.jpg" alt="护肤品广告图原始与优化对比" loading="lazy"></div>
+        <div class="case-body"><div class="mini"><h4>原始描述</h4><div class="quote">生成一张高端护肤精华的广告图，适合电商首页。</div></div><div class="mini"><h4>优化策略</h4><ul class="bullets"><li>明确电商 landing page hero image。</li><li>指定磨砂玻璃精华瓶、暖米色摄影棚、柔和晨光。</li><li>要求无文字、无 logo、无人物、保留后期文案空间。</li></ul></div><div class="mini"><h4>观察结论</h4><div class="verdict">原始图很完整，但会自动加品牌和卖点；优化图更干净、可控，更适合作为品牌可复用素材。</div></div></div>
+        <div class="details"><details><summary>查看优化 prompt 摘要</summary><pre>Purpose: Create a premium skincare serum hero image for an e-commerce landing page.
+Scene: Warm beige studio background with soft morning light.
+Subject: One frosted glass serum bottle centered on a natural stone pedestal.
+Composition: Landscape website hero banner, product centered slightly lower, lots of negative space.
+Text Requirements: No text.
+Constraints: No watermark. No logo. No extra bottles. No hands. No people.</pre></details></div>
+      </article>
+
+      <article class="case" id="case-cover">
+        <div class="case-head"><div><div class="case-no">Case 02</div><h3>小红书发型封面</h3><p class="case-sub">优化版更强调平台、标题和版式一致性；同时也暴露出需要后续视觉质检的 AI 手部瑕疵。</p></div><div class="tagrow"><span class="tag">Social Cover</span><span class="tag">Mobile-first</span><span class="tag">Title Control</span></div></div>
+        <div class="compare"><img class="zoomable" src="assets/xiaohongshu-cover-comparison.jpg" alt="小红书发型封面原始与优化对比" loading="lazy"></div>
+        <div class="case-body"><div class="mini"><h4>原始描述</h4><div class="quote">做一张小红书封面，主题是普通女生如何找到适合自己的发型。</div></div><div class="mini"><h4>优化策略</h4><ul class="bullets"><li>明确小红书移动端封面。</li><li>指定标题、副标题、粉色奶油色调。</li><li>要求中心人物 + 发型对比卡片，限制额外文字。</li></ul></div><div class="mini"><h4>观察结论</h4><div class="verdict">原始描述已能生成成熟封面；优化描述更适合模板化产品，但需要对手部和文字继续做 vision 质检。</div></div></div>
+      </article>
+
+      <article class="case" id="case-info">
+        <div class="case-head"><div><div class="case-no">Case 03</div><h3>AI 入门信息图</h3><p class="case-sub">文字密集型任务中，结构化 prompt 的收益最明显：文字更少、更准，布局更稳定。</p></div><div class="tagrow"><span class="tag">Infographic</span><span class="tag">Text Control</span><span class="tag">2×2 Structure</span></div></div>
+        <div class="compare"><img class="zoomable" src="assets/infographic-comparison.jpg" alt="AI 入门信息图原始与优化对比" loading="lazy"></div>
+        <div class="case-body"><div class="mini"><h4>原始描述</h4><div class="quote">做一张关于如何开始学习 AI 的信息图。</div></div><div class="mini"><h4>优化策略</h4><ul class="bullets"><li>明确正方形信息图和 2×2 结构。</li><li>限定标题和四个栏目文字。</li><li>强调大字号、少文字、无额外文字。</li></ul></div><div class="mini"><h4>观察结论</h4><div class="verdict">原始图内容更丰富，但更容易失控；优化图更像课程封面或社媒收藏图，文字和版式可控性更高。</div></div></div>
+      </article>
+
+      <article class="case" id="case-food">
+        <div class="case-head"><div><div class="case-no">Case 04</div><h3>餐饮菜单牛肉面图片</h3><p class="case-sub">优化 prompt 会让画面更生产友好：无文字、留白明确、适合菜单后期排版。</p></div><div class="tagrow"><span class="tag">Food Photography</span><span class="tag">Copy Space</span><span class="tag">No Text</span></div></div>
+        <div class="compare"><img class="zoomable" src="assets/restaurant-photo-comparison.jpg" alt="牛肉面菜单图原始与优化对比" loading="lazy"></div>
+        <div class="case-body"><div class="mini"><h4>原始描述</h4><div class="quote">生成一张适合餐厅菜单的牛肉面图片，看起来好吃。</div></div><div class="mini"><h4>优化策略</h4><ul class="bullets"><li>明确 restaurant menu hero photo。</li><li>指定食材、拍摄角度、木桌、蒸汽和留白。</li><li>要求无文字、无手、无多余菜品。</li></ul></div><div class="mini"><h4>观察结论</h4><div class="verdict">原始图更像完整营销海报；优化图更适合作为菜单或外卖平台的可编辑摄影素材。</div></div></div>
+      </article>
+    </section>
+
+    <section id="findings" class="wrap"><div class="dark"><div class="kicker">Conclusion</div><h2 class="section-title">这个 Skill 真正提升了什么？</h2><p class="section-desc">不是简单把 prompt 写长，而是把生成任务从“让模型自由发挥”变成“面向商业生产的可控工作流”。</p><div class="insights"><div class="insight"><b>可控性</b><p>明确文字、主体、构图和限制。</p></div><div class="insight"><b>复用性</b><p>输出更像生产素材。</p></div><div class="insight"><b>模板化</b><p>同类需求稳定复现结构。</p></div><div class="insight"><b>后期友好</b><p>减少乱加 logo、文案和元素。</p></div><div class="insight"><b>产品化</b><p>适合 SaaS：一句话 → 模板 → 可控图。</p></div></div></div></section>
+
+    <section id="next" class="wrap"><div class="section-head"><div><div class="kicker">Next Tests</div><h2 class="section-title">下一步测试方向</h2><p class="section-desc">第一版验证了 text-to-image。真正能体现商业价值的下一步，是 image-edit 与多图合成。</p></div></div><div class="roadmap"><div class="card"><h3>Image Edit</h3><ul><li>发型 / 发色试戴</li><li>妆容试妆</li><li>虚拟换装</li></ul></div><div class="card"><h3>Commercial Edit</h3><ul><li>商品背景替换</li><li>家装改造</li><li>品牌素材变体</li></ul></div><div class="card"><h3>Quality Check</h3><ul><li>文字准确性</li><li>主体保真</li><li>AI artifact 检测</li></ul></div></div></section>
+
+    <section class="wrap"><div class="card sources"><h3>参考与源材料</h3><p>页面参考了 Thariq Shihipar 关于 HTML 输出的公开讨论，以及本地生成的 GPT Image 2 workflows 测试结果。</p><a href="https://thariqs.github.io/html-effectiveness/" target="_blank" rel="noreferrer">The Unreasonable Effectiveness of HTML</a><a href="./test-report.md">原始 Markdown 测试报告</a><a href="../">返回 AI Report 首页</a></div></section>
+  </main>
+
+  <footer class="wrap footer">AI Report · GPT Image 2 Workflows Skill Evaluation · 静态 HTML 阅读界面</footer>
+  <div class="lightbox" id="lightbox"><button type="button" aria-label="关闭">关闭</button><img alt="放大图片" /></div>
+  <script>
+    const box = document.getElementById('lightbox');
+    const boxImg = box.querySelector('img');
+    document.querySelectorAll('.zoomable').forEach(img => img.addEventListener('click', () => { boxImg.src = img.src; boxImg.alt = img.alt; box.classList.add('open'); }));
+    box.addEventListener('click', (e) => { if(e.target === box || e.target.tagName === 'BUTTON') box.classList.remove('open'); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') box.classList.remove('open'); });
+  </script>
+</body>
+</html>
