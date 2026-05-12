@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory MCP 统一记忆层调研报告</title>
+<style>
+:root {
+  --ivory:  #FAF9F5;
+  --paper:  #FFFFFF;
+  --slate:  #141413;
+  --clay:   #D97757;
+  --clay-d: #B85C3E;
+  --oat:    #E3DACC;
+  --olive:  #788C5D;
+  --g100:   #F0EEE6;
+  --g200:   #E6E3DA;
+  --g300:   #D1CFC5;
+  --g500:   #87867F;
+  --g700:   #3D3D3A;
+  --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--ivory);
+  color: var(--slate);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 18px; }
+}
+
+/* Masthead */
+header.masthead {
+  padding: 72px 0 48px;
+  border-bottom: 1.5px solid var(--g300);
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--g500);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--clay);
+}
+header h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+header h1 em {
+  font-style: italic;
+  color: var(--clay);
+}
+header .intro {
+  font-size: 16px;
+  color: var(--g700);
+  max-width: 680px;
+  margin-bottom: 24px;
+}
+
+/* TOC Pills */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.toc a {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  border: 1.5px solid var(--g300);
+  border-radius: 20px;
+  background: var(--paper);
+  color: var(--g700);
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+.toc a:hover {
+  border-color: var(--clay);
+}
+
+/* Sections */
+section {
+  padding: 64px 0;
+}
+section + section {
+  border-top: 1px solid var(--g200);
+}
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.sec-num {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--clay);
+  font-weight: 600;
+}
+.sec-head h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 24px;
+}
+.sec-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--g500);
+  background: var(--g100);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--paper);
+  border: 1.5px solid var(--g300);
+  border-radius: 14px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.card-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.card-type {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--g500);
+  margin-bottom: 12px;
+}
+.card-desc {
+  font-size: 14px;
+  color: var(--g700);
+  margin-bottom: 16px;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--g100);
+  color: var(--g700);
+}
+.tag.yes { background: #e8f5e9; color: #2e7d32; }
+.tag.no { background: #fbe9e7; color: #c62828; }
+.tag.partial { background: #fff8e1; color: #f57f17; }
+
+/* Table */
+.table-wrap {
+  overflow-x: auto;
+  margin: 24px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--g500);
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1.5px solid var(--g300);
+}
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--g200);
+  vertical-align: top;
+}
+tr:hover td {
+  background: var(--g100);
+}
+
+/* Recommendation */
+.rec-box {
+  background: var(--paper);
+  border: 2px solid var(--clay);
+  border-radius: 14px;
+  padding: 28px;
+  margin-top: 24px;
+}
+.rec-box h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--clay-d);
+}
+.rec-box p {
+  margin-bottom: 8px;
+}
+
+/* Architecture */
+.arch-diagram {
+  background: var(--g100);
+  border-radius: 12px;
+  padding: 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 24px 0;
+}
+
+/* Footer */
+footer {
+  padding: 40px 0;
+  border-top: 1.5px solid var(--g300);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--g500);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Research Report · 2026-05-13</div>
+  <h1>统一 <em>Memory</em> MCP 调研</h1>
+  <p class="intro">让所有 AI 客户端（ChatGPT、Claude Code、OpenClaw、Cherry Studio）共享同一套记忆层——现有方案全景扫描与路径推荐。</p>
+  <nav class="toc">
+    <a href="#problem">问题定义</a>
+    <a href="#solutions">方案对比 [7]</a>
+    <a href="#findings">关键发现 [5]</a>
+    <a href="#clients">客户端接入</a>
+    <a href="#architecture">目标架构</a>
+    <a href="#recommendation">推荐路径</a>
+  </nav>
+</header>
+
+<section id="problem">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>问题定义</h2>
+  </div>
+  <p>每个 AI 工具各自维护 context，互不相通。ChatGPT 的记忆留在 ChatGPT，Claude Code 的记忆留在本地，OpenClaw 的记忆在服务器——形成<strong>记忆孤岛</strong>。</p>
+  <p style="margin-top:12px;">目标：搭建一个自部署的 Memory MCP Server，通过 MCP 协议让所有客户端读写同一套记忆。</p>
+</section>
+
+<section id="solutions">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2>方案对比</h2>
+    <span class="sec-count">7 个方案</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Mem0 MCP (Cloud)</div>
+      <div class="card-type">SaaS + MCP</div>
+      <div class="card-desc">YC 背书，benchmark 最强。LoCoMo 91.6, LongMemEval 93.4。多信号融合检索（BM25 + 向量 + 实体链接）。一条命令接入。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ MCP HTTP</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag no">✗ 自部署</span>
+        <span class="tag">托管存储</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Mem0 OSS</div>
+      <div class="card-type">开源库 · Python</div>
+      <div class="card-desc">Mem0 的开源版本，可本地跑全套。BM25 + 向量 + 实体链接。但旧的 MCP server 已 archived，需要自己包一层 wrapper。</div>
+      <div class="card-tags">
+        <span class="tag partial">△ 需包 MCP</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag yes">✓ 自部署</span>
+        <span class="tag">Postgres/Qdrant</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Supermemory MCP</div>
+      <div class="card-type">SaaS + MCP</div>
+      <div class="card-desc">"Your memories are in ChatGPT... But nowhere else." 专门解决跨客户端记忆问题。免费、无需登录、一条命令接入。LongMemEval #1。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ MCP</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag partial">△ 半自部署</span>
+        <span class="tag">免费</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">doobidoo/mcp-memory-service</div>
+      <div class="card-type">开源 · Python</div>
+      <div class="card-desc">最全面的自部署方案。REST API + MCP (stdio/HTTP/SSE) + OAuth + Web Dashboard + 知识图谱 + 向量搜索。支持 Remote MCP。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ MCP 全协议</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag yes">✓ 自部署</span>
+        <span class="tag">本地存储</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">gregpriday/memory-mcp</div>
+      <div class="card-type">开源 · TypeScript</div>
+      <div class="card-desc">创新的自然语言交互方式。用 GPT-5 function calling 翻译自然语言为数据库操作。OpenAI embeddings + Turso 向量搜索。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ MCP stdio</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag yes">✓ 自部署</span>
+        <span class="tag">Turso (libSQL)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">MCP 官方 Memory Server</div>
+      <div class="card-type">参考实现 · TypeScript</div>
+      <div class="card-desc">知识图谱模式（实体 + 关系 + 观察）。JSON 文件存储，无向量搜索。适合 demo，不适合生产。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ MCP stdio</span>
+        <span class="tag no">✗ 语义搜索</span>
+        <span class="tag yes">✓ 自部署</span>
+        <span class="tag">JSON 文件</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">自建方案</div>
+      <div class="card-type">自研</div>
+      <div class="card-desc">完全按需设计。MCP SDK (TypeScript/Python) + SQLite + 向量引擎 + Streamable HTTP。最灵活但需要开发时间。</div>
+      <div class="card-tags">
+        <span class="tag yes">✓ 按需设计</span>
+        <span class="tag yes">✓ 语义搜索</span>
+        <span class="tag yes">✓ 完全掌控</span>
+        <span class="tag">1-2 天</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2>关键发现</h2>
+    <span class="sec-count">5 条</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>发现</th><th>影响</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Supermemory MCP</strong> 是目前最接近"统一记忆"愿景的产品</td>
+          <td>免费、零配置、但数据在云端</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>doobidoo/mcp-memory-service</strong> 是最全面的自部署方案</td>
+          <td>REST + MCP + OAuth + Dashboard，可直接用</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>ChatGPT 是唯一不支持 MCP 的主流客户端</strong></td>
+          <td>需要 Custom GPT Action 桥接，增加复杂度</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Mem0 OSS 的旧 MCP server 已 archived</strong></td>
+          <td>官方转向云端托管，自部署需自己包 wrapper</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Streamable HTTP 是多客户端并发的必要条件</strong></td>
+          <td>stdio 只能单进程连接，不适合多客户端场景</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="clients">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2>客户端接入可行性</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>客户端</th><th>MCP 支持</th><th>接入方式</th><th>难度</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Claude Code / Codex</td><td>✅ 原生</td><td>mcp.json 配置 HTTP endpoint</td><td style="color:var(--olive)">低</td></tr>
+        <tr><td>OpenClaw</td><td>✅ mcporter</td><td>mcporter 配置 remote server</td><td style="color:var(--olive)">低</td></tr>
+        <tr><td>Cherry Studio</td><td>✅ MCP</td><td>设置里加 MCP server URL</td><td style="color:var(--olive)">低</td></tr>
+        <tr><td>Cursor / Windsurf</td><td>✅ 原生</td><td>mcp.json 配置</td><td style="color:var(--olive)">低</td></tr>
+        <tr><td>ChatGPT Web/Desktop</td><td>❌ 无</td><td>Custom GPT Action 桥接</td><td style="color:var(--clay)">中高</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2>目标架构</h2>
+  </div>
+
+  <div class="arch-diagram">┌─────────────┐  ┌──────────────┐  ┌───────────┐  ┌──────────────┐
+│ ChatGPT Web │  │ Claude Code  │  │  OpenClaw  │  │ Cherry Studio│
+└──────┬──────┘  └──────┬───────┘  └─────┬─────┘  └──────┬───────┘
+       │                 │                │               │
+       │ GPT Action      │ MCP HTTP       │ mcporter      │ MCP HTTP
+       └────────────┬────┴────────┬───────┘               │
+                    │             │                        │
+                    ▼             ▼                        ▼
+            ┌───────────────────────────────────────────────┐
+            │        Unified Memory MCP Server              │
+            │  ──────────────────────────────────────────── │
+            │  Tools: store · recall · list · forget        │
+            │  Transport: Streamable HTTP + Bearer Auth     │
+            ├───────────────────────────────────────────────┤
+            │  Engine: Embedding + Vector + Entity Link     │
+            │  Storage: SQLite/Postgres + pgvector/Turso    │
+            └───────────────────────────────────────────────┘</div>
+</section>
+
+<section id="recommendation">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <h2>推荐路径</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>路径</th><th>方案</th><th>工作量</th><th>数据主权</th><th>适合场景</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600">A. 快速验证</td>
+          <td>Supermemory MCP 或 Mem0 Cloud</td>
+          <td>10 分钟</td>
+          <td style="color:var(--clay)">❌ 云端</td>
+          <td>先体验效果，验证需求</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">B. 自主可控</td>
+          <td>doobidoo/mcp-memory-service</td>
+          <td>半天</td>
+          <td style="color:var(--olive)">✅ 本地</td>
+          <td>最全面现成方案，直接部署</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">C. 深度定制</td>
+          <td>Mem0 OSS + 自建 MCP wrapper</td>
+          <td>1-2 天</td>
+          <td style="color:var(--olive)">✅ 本地</td>
+          <td>需要 Mem0 级别的记忆算法</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rec-box">
+    <h3>∴ 推荐：路径 B → doobidoo/mcp-memory-service</h3>
+    <p>理由：开箱即用的自部署方案，支持全部 MCP 传输协议（stdio + HTTP + SSE），自带 Web Dashboard 和 OAuth，知识图谱 + 向量搜索双引擎。</p>
+    <p>部署在当前 VPS，所有客户端通过 HTTP MCP 连入。ChatGPT 通过 Custom GPT Action 桥接同一个 HTTP endpoint。</p>
+    <p style="margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--g500)">
+      备选：如果需要 Mem0 级别的记忆质量（benchmark 更高），走路径 C。
+    </p>
+  </div>
+</section>
+
+</div>
+
+<footer class="wrap">
+  <span>Memory MCP Research · Axiom for dimension</span>
+  <span>2026-05-13 · The Unreasonable Effectiveness of HTML</span>
+</footer>
+
+</div>
+</body>
+</html>
